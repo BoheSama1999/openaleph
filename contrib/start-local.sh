@@ -29,10 +29,12 @@ if [ ! -f "$ENV_FILE" ]; then
     sed \
       -e "s/^ALEPH_SECRET_KEY=.*/ALEPH_SECRET_KEY=$secret_key/" \
       -e 's/^ALEPH_SINGLE_USER=.*/ALEPH_SINGLE_USER=true/' \
+      -e 's,^# OPENALEPH_DB_URI=postgresql://aleph:aleph@postgres/aleph,OPENALEPH_DB_URI=postgresql://aleph:aleph@postgres/aleph,' \
+      -e 's,^# PROCRASTINATE_DB_URI=postgresql://aleph:aleph@postgres/aleph,PROCRASTINATE_DB_URI=postgresql://aleph:aleph@postgres/aleph,' \
       -e 's,^# FTM_FRAGMENTS_URI=postgresql://aleph:aleph@postgres/aleph,FTM_FRAGMENTS_URI=postgresql://aleph:aleph@postgres/aleph,' \
       "$ROOT_DIR/aleph.env.tmpl" >"$ENV_FILE"
   )
-  printf '%s\n' 'Created aleph.env with a generated secret key, single-user mode enabled and the default fragments db url.'
+  printf '%s\n' 'Created aleph.env with a generated secret key, single-user mode enabled and default database urls.'
 else
   printf '%s\n' 'Using existing aleph.env without changes.'
 fi

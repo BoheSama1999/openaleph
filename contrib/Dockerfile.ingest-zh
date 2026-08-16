@@ -1,0 +1,6 @@
+FROM ghcr.io/openaleph/ingest-file:5.3.1
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends tesseract-ocr-chi-sim \
+    && ln -s "${TESSDATA_PREFIX}/chi_sim.traineddata" "${TESSDATA_PREFIX}/zho.traineddata" \
+    && rm -rf /var/lib/apt/lists/*

@@ -27,6 +27,7 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
     restart: unless-stopped
@@ -39,7 +40,10 @@ services:
     restart: unless-stopped
 
   ingest:
-    image: ghcr.io/openaleph/ingest-file:${ALEPH_TAG:-latest}
+    build:
+      context: .
+      dockerfile: contrib/Dockerfile.ingest-zh
+    image: openaleph/ingest-file:5.3.1-zh
     # ingest-file is currently published only for AMD64.
     platform: linux/amd64
     command: procrastinate worker -q ingest
@@ -101,11 +105,13 @@ services:
       - aleph.env
 
   ui:
-    image: ghcr.io/openaleph/aleph-ui:${ALEPH_TAG:-latest}
+    build:
+      context: ./ui
+    image: openaleph/aleph-ui:5.3.1-zh
     depends_on:
       - api
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     restart: unless-stopped
 
 volumes:

@@ -52,6 +52,8 @@ ENV GENERATE_SOURCEMAP=false
 # Run any postinstall scripts that were skipped, then build
 RUN npm rebuild && \
     npm run messages && \
+    npm run compile-translations && \
+    npm run concat-translations && \
     npm run build
 
 # =============================================================================
